@@ -1,111 +1,141 @@
-# Building-Knowledge-Engineering-AI-Agent-with-DeepKE
 
-# 知识图谱开源工具使用（DeepKE）实验 README
+# 🚀 DeepKE Three Kingdoms Knowledge Graph & QA Agent
 
-## 项目简介
-本项目主题是：**知识图谱开源工具使用**。实验基于 **DeepKE** 对《三国演义》相关非结构化文本进行**实体识别（NER）**与**关系抽取（RE）**，并将抽取得到的三元组构建为知识图谱，完成可视化展示与知识库问答 Agent 的搭建。 
----
-
-## 实验目标
-1. 掌握至少一种开源知识抽取工具（DeepKE）的使用方法与基本流程  
-2. 能够对非结构化文本执行实体识别与关系抽取  
-3. 将抽取结果组织为三元组（head, relation, tail），输出为 CSV  
-4. 完成知识图谱可视化与基于知识库的问答 Agent 初步构建  
+An end-to-end knowledge extraction pipeline built on **DeepKE**: run **NER / RE** on unstructured text from *Romance of the Three Kingdoms*, export triples (CSV), build and visualize a knowledge graph, and finally connect it to a knowledge base to power a QA **Agent**.
 
 ---
 
-## 环境与依赖
-- DeepKE：按 GitHub 官方文档部署  
-- Python 虚拟环境：按文档创建（过程中遇到环境报错，使用额外命令修复）  
-- 模型：下载对应的 **NER** 与 **RE** 预训练模型（权重 + checkpoint）并放置到指定目录  
-- 配置：修改 `yaml` 配置文件中的模型路径与参数
-
-> 说明：本文档不复述具体依赖版本，以实验所用[DeepKE官方文档](https://github.com/zjunlp/DeepKE)要求为准。
-
----
-
-## 目录结构（建议）
-> 以实验实际流程为导向给出建议结构，按需调整。
+## ✨ Features
+- 🧠 **Named Entity Recognition (NER)**: Extract key entities (e.g., people/locations) from text
+- 🔗 **Relation Extraction (RE)**: Generate structured triples `head, relation, tail`
+- 🪟 **Long-Text Ready**: Sliding window + overlap to cover full documents and avoid 512-token truncation
+- ⚡ **Fast Inference**: Load the RE model once to significantly reduce runtime
+- 🗺️ **KG Visualization**: CSV → graph → HTML visualization in one shot
+- 🤖 **Knowledge-base Agent**: Integrates with Volcengine Knowledge Base for terminal QA
 
 ---
 
-## 实验流程
-
-### 任务一：部署 DeepKE 并完成 NER / RE 推理
-1. 从 GitHub 下载 DeepKE 代码并在本地部署  
-2. 下载 NER 与 RE 的预训练模型  
-3. 将模型权重与 checkpoint 放入指定目录，并修改配置文件（如 `predict.yaml`）  
-4. 创建虚拟环境并解决环境报错  
-5. 在 `predict.yaml` 中填写待抽取文本 `text`  
-6. 终端运行推理命令，得到：
-   - NER 运行结果
-   - RE 运行结果
+## 🧱 Tech Stack
+- DeepKE (NER / RE)
+- Python + Virtualenv/Conda
+- Pretrained models (optionally replace with your fine-tuned checkpoints)
+- Volcengine Knowledge Base (for the Agent)
 
 ---
 
-### 任务二：利用 DeepKE 构建三国知识图谱（三元组抽取）
-#### 2.1 预训练模型验证
-先运行 DeepKE 示例，确认预训练模型加载成功并可输出合理结果。
-
-#### 2.2 三国文本抽取与问题处理
-直接将《三国演义》文本粘贴到配置中会出现识别异常，因此改为：
-- 将 txt 文本处理成可复制到 `predict.yaml` 的格式后再执行
-
-当文本过长时出现报错（索引越界 / 超长截断），根因是模型只处理有限 token（如 512）。
-
-#### 2.3 关键改动：长文本滑窗 + RE 上下文截取 + 性能优化
-对 `predict.py` 进行修改，实现：
-- **长文本滑窗切片做 NER（带 overlap）**：覆盖整段文本，不再只取前 512 token  
-- **关系抽取改为短上下文窗口**：对每个实体对截取包含 head/tail 的局部上下文，避免 RE 截断丢实体  
-- **RE 模型只加载一次**：避免“每个实体对 load 一次”导致极慢  
-- **实体带字符级 start/end**：便于精确截上下文  
-- **关系标签映射优化**：使用 `id2rel` 映射，并对 NA/偏移做兜底；不在每个样本反复读取 `relation.csv`  
-- **直接输出三元组 CSV**：脚本最终写出三元组到 `csv`
-
-运行后可观察到脚本会对多个实体对执行 RE，并最终生成 `triples.csv`。
-
----
-
-### 任务三：可视化
-1. 基于抽取出的 `triples.csv` 生成构图文件,终端运行 ```python graph.py``` 
-2. 导入 CSV 并分析  
-3. 导出 HTML 可视化，浏览器打开查看效果
-
-结果分析：
-- 初期效果较差：主要原因是使用预训练模型；且任务要求的某些字段（如职位、国家）在 DeepKE 的抽取结果中并不包含，导致无法抽取到正确目标关系。
+## 📁 Project Layout
+```text
+.
+├── conf/
+│   └── predict.yaml
+├── cnschema/
+│   ├── predict.py        # Long-text sliding window + RE context window + CSV export
+│   └── graph.py          # triples.csv -> graph.html
+├── data/
+│   └── sanguo.txt        # Three Kingdoms text (optional)
+├── outputs/
+│   ├── triples.csv       # Extracted triples
+│   └── graph.html        # Visualization output
+├── text.png
+├── KG.png
+├── KG1.png
+├── Agent1.png
+└── Agent2.png
+````
 
 ---
 
-### 任务四：创建知识库问答 Agent
-1. 在火山引擎导入知识库并进行文档切片  
-2. 使用知识库问答页面提供的代码在本地运行，实现终端对话  
-3. 初期问答效果较差：主要归因于预训练模型与抽取噪声，但整体对话框架可运行
+## ✅ Quick Start
 
-#### 改进：用自抽取关系数据训练 RE 模型
-- 将三元组提取脚本中的路径切换到训练后的模型权重  
-- 修改关系类别配置以适配自定义关系集合  
-- 重新抽取与可视化后效果明显提升（图更清晰、关系类别更正确）
-- 将新的关系抽取结果 CSV 上传火山引擎，知识库内关系类别至少更加准确
+### 1) Setup DeepKE & Models
 
----
+1. Download and deploy DeepKE following the official documentation
+2. Download **NER / RE** checkpoints (weights + checkpoints) and place them under the corresponding `models/` directory
+3. Edit `configs/predict.yaml`:
 
-## 输出结果
-- `outputs/triples.csv`：三元组关系抽取结果  
-- `outputs/graph.html`：知识图谱可视化页面  
-- （可选）训练后的 RE 模型权重与对应配置
+   * model paths
+   * inference parameters
+   * input text `text`
+
+📌 Official docs: [DeepKE GitHub](https://github.com/zjunlp/DeepKE)
 
 ---
 
-## 已知问题与改进方向
-- 预训练模型对《三国演义》领域适配有限，噪声较多  
-- 目标字段（如“职位、国家”）若不在模型类别或训练语料覆盖范围内，很难抽取到  
-- 改进方向：
-  1. 使用自标注或更贴近领域的数据微调 NER/RE  
-  2. 扩充关系类型与实体类型体系（schema）  
-  3. 增加抽取后处理（去重、别名合并、置信度阈值、规则补全）  
-  4. 引入实体链接（同名消歧）以提升图谱质量  
+### 2) Run Extraction (NER + RE → CSV)
+
+Put your input text into `predict.yaml` (a pre-processed format is recommended), then run:
+
+```bash
+python cnschema/predict.py
+```
+
+✅ Output:
+
+* `outputs/triples.csv`: extracted relation triples
+
+Engineering highlights (implemented in the script):
+
+* 🪟 **NER long-text sliding window (overlap)**: covers the entire document instead of only the first 512 tokens
+* 🔗 **RE context window**: for each entity pair, extract a short context containing head/tail to avoid truncation
+* ⚡ **Single RE model load**: prevents re-loading the model per entity pair (major speedup)
+* 🧭 **More robust relation mapping**: uses `id2rel` with NA/offset fallbacks, reducing repeated runtime IO
+* 📦 **Direct CSV export**: write triples to disk once extraction finishes
+
+<p align="center">
+  <img src="text.png" width="50%" />
+</p>
 
 ---
 
-## 实验心得
-本实验初步学习了知识图谱创建流程，并独立完成 DeepKE 的部署与代码调试，实现实体识别与关系抽取；将抽取结果整理为 CSV 三元组并完成可视化；同时在火山引擎中学会知识库导入与 API 调用，构建了一个基于本人抽取三国关系数据的对话 Agent。整体问答效果受限于模型质量，但流程与框架已打通，为后续模型训练与图谱质量提升奠定基础。
+## 🗺️ Visualization
+
+Generate an HTML knowledge graph from `outputs/triples.csv`:
+
+```bash
+python scripts/graph.py
+```
+
+✅ Output:
+
+* `outputs/graph.html`
+
+<p align="center">
+  <img src="KG.png" width="50%" /><img src="KG1.png" width="50%" />
+</p>
+
+---
+
+## 🤖 Knowledge-base QA Agent (Volcengine)
+
+1. Import the extracted results (CSV/docs) into Volcengine Knowledge Base and complete chunking
+2. Run the code provided by the Knowledge Base QA page locally to enable terminal-based dialogue
+
+<p align="center">
+  <img src="Agent1.png" width="50%" />
+  <img src="Agent2.png" width="50%" />
+</p>
+
+---
+
+## 📦 Outputs
+
+* `outputs/triples.csv`: extracted triples (structured relation data)
+* `outputs/graph.html`: HTML knowledge graph visualization
+* (Optional) fine-tuned RE checkpoints + corresponding config
+
+---
+
+## 🧩 Known Issues
+
+* With only pretrained models, domain adaptation to *Romance of the Three Kingdoms* is limited and can be noisy
+* Target fields like “titles/countries” may be missing if they are not covered by the entity/relation schema
+
+---
+
+## 🛠️ Roadmap
+
+* 🧪 Domain fine-tuning: fine-tune NER/RE with self-labeled or self-extracted data
+* 🧩 Schema expansion: add entity/relation types such as “titles/countries”
+* 🧹 Post-processing: deduplication, alias merging, thresholding, and rule-based completion
+* 🧭 Entity linking: name disambiguation to improve graph consistency and usability
+
