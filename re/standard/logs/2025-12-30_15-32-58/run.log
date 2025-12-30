@@ -1,0 +1,205 @@
+[2025-12-30 15:32:58,374][__main__][INFO] - 
+cwd: C:\Users\19029\DeepKE\example\re\standard
+use_wandb: false
+preprocess: true
+data_path: data/origin
+out_path: data/out
+chinese_split: true
+replace_entity_with_type: true
+replace_entity_with_scope: true
+min_freq: 3
+pos_limit: 30
+seed: 1
+use_gpu: true
+gpu_id: 0
+epoch: 50
+batch_size: 32
+learning_rate: 0.0003
+lr_factor: 0.7
+lr_patience: 3
+weight_decay: 0.001
+early_stopping_patience: 6
+train_log: true
+log_interval: 10
+show_plot: false
+only_comparison_plot: false
+plot_utils: matplot
+predict_plot: false
+use_multi_gpu: false
+gpu_ids: 0,1
+vocab_size: ???
+word_dim: 60
+pos_size: 62
+pos_dim: 10
+dim_strategy: sum
+num_relations: 12
+fp: C:\Users\19029\DeepKE\example\re\standard\re_bert.pth
+model_name: lm
+lm_file: bert-base-chinese
+num_hidden_layers: 1
+type_rnn: LSTM
+input_size: 768
+hidden_size: 100
+num_layers: 1
+dropout: 0.3
+bidirectional: true
+last_layer_hn: true
+
+[2025-12-30 15:32:58,374][__main__][INFO] - device: cpu
+[2025-12-30 15:32:58,378][deepke.relation_extraction.standard.tools.preprocess][INFO] - ===== start preprocess data =====
+[2025-12-30 15:32:58,378][deepke.relation_extraction.standard.tools.preprocess][INFO] - load raw files...
+[2025-12-30 15:32:58,378][utils.ioUtils][INFO] - load csv from C:\Users\19029\DeepKE\example\re\standard\data/origin\train.csv
+[2025-12-30 15:32:58,393][utils.ioUtils][INFO] - load csv from C:\Users\19029\DeepKE\example\re\standard\data/origin\valid.csv
+[2025-12-30 15:32:58,409][utils.ioUtils][INFO] - load csv from C:\Users\19029\DeepKE\example\re\standard\data/origin\test.csv
+[2025-12-30 15:32:58,425][utils.ioUtils][INFO] - load csv from C:\Users\19029\DeepKE\example\re\standard\data/origin\relation.csv
+[2025-12-30 15:32:58,425][deepke.relation_extraction.standard.tools.preprocess][INFO] - clean data...
+[2025-12-30 15:32:58,425][deepke.relation_extraction.standard.tools.preprocess][INFO] - convert relation into index...
+[2025-12-30 15:32:58,425][deepke.relation_extraction.standard.tools.preprocess][INFO] - verify whether use pretrained language models...
+[2025-12-30 15:32:58,430][deepke.relation_extraction.standard.tools.preprocess][INFO] - use pretrained language models serialize sentence...
+[2025-12-30 15:32:58,430][deepke.relation_extraction.standard.tools.preprocess][INFO] - use bert tokenizer...
+[2025-12-30 15:32:59,091][deepke.relation_extraction.standard.tools.preprocess][INFO] - use bert tokenizer...
+[2025-12-30 15:32:59,589][deepke.relation_extraction.standard.tools.preprocess][INFO] - use bert tokenizer...
+[2025-12-30 15:33:00,106][deepke.relation_extraction.standard.tools.preprocess][INFO] - save data for backup...
+[2025-12-30 15:33:00,106][utils.ioUtils][INFO] - save data in C:\Users\19029\DeepKE\example\re\standard\data/out\train.pkl
+[2025-12-30 15:33:00,109][utils.ioUtils][INFO] - save data in C:\Users\19029\DeepKE\example\re\standard\data/out\valid.pkl
+[2025-12-30 15:33:00,109][utils.ioUtils][INFO] - save data in C:\Users\19029\DeepKE\example\re\standard\data/out\test.pkl
+[2025-12-30 15:33:00,112][deepke.relation_extraction.standard.tools.preprocess][INFO] - ===== end preprocess data =====
+[2025-12-30 15:33:00,112][utils.ioUtils][INFO] - load data from C:\Users\19029\DeepKE\example\re\standard\data/out\train.pkl
+[2025-12-30 15:33:00,122][utils.ioUtils][INFO] - load data from C:\Users\19029\DeepKE\example\re\standard\data/out\valid.pkl
+[2025-12-30 15:33:00,132][utils.ioUtils][INFO] - load data from C:\Users\19029\DeepKE\example\re\standard\data/out\test.pkl
+[2025-12-30 15:33:01,230][__main__][INFO] - 
+ LM(
+  (bert): BertModel(
+    (embeddings): BertEmbeddings(
+      (word_embeddings): Embedding(21128, 768, padding_idx=0)
+      (position_embeddings): Embedding(512, 768)
+      (token_type_embeddings): Embedding(2, 768)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (encoder): BertEncoder(
+      (layer): ModuleList(
+        (0): BertLayer(
+          (attention): BertAttention(
+            (self): BertSelfAttention(
+              (query): Linear(in_features=768, out_features=768, bias=True)
+              (key): Linear(in_features=768, out_features=768, bias=True)
+              (value): Linear(in_features=768, out_features=768, bias=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (output): BertSelfOutput(
+              (dense): Linear(in_features=768, out_features=768, bias=True)
+              (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (intermediate): BertIntermediate(
+            (dense): Linear(in_features=768, out_features=3072, bias=True)
+            (intermediate_act_fn): GELUActivation()
+          )
+          (output): BertOutput(
+            (dense): Linear(in_features=3072, out_features=768, bias=True)
+            (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+    )
+    (pooler): BertPooler(
+      (dense): Linear(in_features=768, out_features=768, bias=True)
+      (activation): Tanh()
+    )
+  )
+  (bilstm): RNN(
+    (rnn): LSTM(768, 50, batch_first=True, dropout=0.3, bidirectional=True)
+  )
+  (fc): Linear(in_features=100, out_features=12, bias=True)
+  (dropout): Dropout(p=0.3, inplace=False)
+)
+[2025-12-30 15:33:01,591][__main__][INFO] - ========== Start training ==========
+[2025-12-30 15:33:30,654][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 1: [320/471 (68%)]	Loss: 1.787901
+[2025-12-30 15:33:30,659][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 1: Acc: 27.81%	macro metrics: [p: 0.0866, r:0.1422, f1:0.0937]
+[2025-12-30 15:33:44,961][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 1: [471/471 (100%)]	Loss: 1.825419
+[2025-12-30 15:33:44,961][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 1: Acc: 30.57%	macro metrics: [p: 0.0912, r:0.1483, f1:0.0967]
+[2025-12-30 15:33:45,126][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 1: [6/6](100%)	 Loss: 3.187527
+[2025-12-30 15:33:45,126][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 1: Acc: 0.00%	macro metrics: [p: 0.0000, r:0.0000, f1:0.0000]
+[2025-12-30 15:34:15,864][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 2: [320/471 (68%)]	Loss: 1.504689
+[2025-12-30 15:34:15,864][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 2: Acc: 39.06%	macro metrics: [p: 0.1112, r:0.1155, f1:0.1047]
+[2025-12-30 15:34:29,826][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 2: [471/471 (100%)]	Loss: 1.682104
+[2025-12-30 15:34:29,826][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 2: Acc: 38.85%	macro metrics: [p: 0.1128, r:0.1164, f1:0.1056]
+[2025-12-30 15:34:29,984][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 2: [6/6](100%)	 Loss: 3.419997
+[2025-12-30 15:34:29,984][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 2: Acc: 0.00%	macro metrics: [p: 0.0000, r:0.0000, f1:0.0000]
+[2025-12-30 15:35:00,364][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 3: [320/471 (68%)]	Loss: 1.597875
+[2025-12-30 15:35:00,364][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 3: Acc: 50.62%	macro metrics: [p: 0.1487, r:0.1526, f1:0.1432]
+[2025-12-30 15:35:14,784][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 3: [471/471 (100%)]	Loss: 1.363864
+[2025-12-30 15:35:14,784][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 3: Acc: 52.44%	macro metrics: [p: 0.1561, r:0.1613, f1:0.1508]
+[2025-12-30 15:35:14,946][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 3: [6/6](100%)	 Loss: 3.233122
+[2025-12-30 15:35:14,946][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 3: Acc: 0.00%	macro metrics: [p: 0.0000, r:0.0000, f1:0.0000]
+[2025-12-30 15:35:45,299][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 4: [320/471 (68%)]	Loss: 1.274893
+[2025-12-30 15:35:45,299][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 4: Acc: 56.88%	macro metrics: [p: 0.1553, r:0.1860, f1:0.1691]
+[2025-12-30 15:36:09,665][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 4: [471/471 (100%)]	Loss: 0.986807
+[2025-12-30 15:36:09,665][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 4: Acc: 60.30%	macro metrics: [p: 0.2555, r:0.2021, f1:0.1953]
+[2025-12-30 15:36:09,994][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 4: [6/6](100%)	 Loss: 2.804227
+[2025-12-30 15:36:09,994][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 4: Acc: 0.00%	macro metrics: [p: 0.0000, r:0.0000, f1:0.0000]
+[2025-12-30 15:36:41,769][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 5: [320/471 (68%)]	Loss: 0.931694
+[2025-12-30 15:36:41,769][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 5: Acc: 75.31%	macro metrics: [p: 0.2977, r:0.2705, f1:0.2712]
+[2025-12-30 15:37:02,260][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 5: [471/471 (100%)]	Loss: 1.282421
+[2025-12-30 15:37:02,260][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 5: Acc: 73.25%	macro metrics: [p: 0.3813, r:0.2685, f1:0.2697]
+[2025-12-30 15:37:02,517][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 5: [6/6](100%)	 Loss: 2.666852
+[2025-12-30 15:37:02,517][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 5: Acc: 16.67%	macro metrics: [p: 0.2000, r:0.0500, f1:0.0800]
+[2025-12-30 15:37:32,019][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 6: [320/471 (68%)]	Loss: 0.585700
+[2025-12-30 15:37:32,019][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 6: Acc: 82.81%	macro metrics: [p: 0.5468, r:0.3893, f1:0.4189]
+[2025-12-30 15:37:46,649][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 6: [471/471 (100%)]	Loss: 0.599660
+[2025-12-30 15:37:46,649][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 6: Acc: 81.53%	macro metrics: [p: 0.4927, r:0.3628, f1:0.3831]
+[2025-12-30 15:37:46,819][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 6: [6/6](100%)	 Loss: 3.090564
+[2025-12-30 15:37:46,819][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 6: Acc: 16.67%	macro metrics: [p: 0.2000, r:0.0500, f1:0.0800]
+[2025-12-30 15:38:17,684][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 7: [320/471 (68%)]	Loss: 0.344414
+[2025-12-30 15:38:17,684][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 7: Acc: 88.75%	macro metrics: [p: 0.7734, r:0.5954, f1:0.6434]
+[2025-12-30 15:38:31,608][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 7: [471/471 (100%)]	Loss: 0.474961
+[2025-12-30 15:38:31,608][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 7: Acc: 88.32%	macro metrics: [p: 0.7751, r:0.5216, f1:0.5828]
+[2025-12-30 15:38:31,768][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 7: [6/6](100%)	 Loss: 2.983397
+[2025-12-30 15:38:31,768][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 7: Acc: 16.67%	macro metrics: [p: 0.2000, r:0.0500, f1:0.0800]
+[2025-12-30 15:39:02,024][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 8: [320/471 (68%)]	Loss: 0.404805
+[2025-12-30 15:39:02,024][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 8: Acc: 94.06%	macro metrics: [p: 0.7812, r:0.6964, f1:0.7237]
+[2025-12-30 15:39:16,180][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 8: [471/471 (100%)]	Loss: 0.339670
+[2025-12-30 15:39:16,180][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 8: Acc: 94.06%	macro metrics: [p: 0.8822, r:0.7086, f1:0.7569]
+[2025-12-30 15:39:16,340][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 8: [6/6](100%)	 Loss: 2.430461
+[2025-12-30 15:39:16,340][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 8: Acc: 16.67%	macro metrics: [p: 0.2000, r:0.0500, f1:0.0800]
+[2025-12-30 15:40:07,454][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 9: [320/471 (68%)]	Loss: 0.134954
+[2025-12-30 15:40:07,454][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 9: Acc: 96.88%	macro metrics: [p: 0.8910, r:0.8372, f1:0.8554]
+[2025-12-30 15:40:32,399][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 9: [471/471 (100%)]	Loss: 0.311619
+[2025-12-30 15:40:32,399][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 9: Acc: 96.60%	macro metrics: [p: 0.8919, r:0.8124, f1:0.8424]
+[2025-12-30 15:40:32,729][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 9: [6/6](100%)	 Loss: 2.490852
+[2025-12-30 15:40:32,729][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 9: Acc: 16.67%	macro metrics: [p: 0.2000, r:0.0500, f1:0.0800]
+[2025-12-30 15:41:15,310][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 10: [320/471 (68%)]	Loss: 0.214886
+[2025-12-30 15:41:15,310][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 10: Acc: 99.38%	macro metrics: [p: 0.9982, r:0.9515, f1:0.9708]
+[2025-12-30 15:41:32,046][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 10: [471/471 (100%)]	Loss: 0.177769
+[2025-12-30 15:41:32,046][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 10: Acc: 98.73%	macro metrics: [p: 0.9879, r:0.9315, f1:0.9482]
+[2025-12-30 15:41:32,202][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 10: [6/6](100%)	 Loss: 2.644075
+[2025-12-30 15:41:32,202][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 10: Acc: 16.67%	macro metrics: [p: 0.2000, r:0.0500, f1:0.0800]
+[2025-12-30 15:42:23,081][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 11: [320/471 (68%)]	Loss: 0.085667
+[2025-12-30 15:42:23,081][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 11: Acc: 99.38%	macro metrics: [p: 0.9931, r:0.9591, f1:0.9733]
+[2025-12-30 15:42:40,304][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 11: [471/471 (100%)]	Loss: 0.090972
+[2025-12-30 15:42:40,304][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 11: Acc: 99.36%	macro metrics: [p: 0.9941, r:0.9513, f1:0.9688]
+[2025-12-30 15:42:40,508][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 11: [6/6](100%)	 Loss: 2.311114
+[2025-12-30 15:42:40,508][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 11: Acc: 50.00%	macro metrics: [p: 0.2000, r:0.1500, f1:0.1714]
+[2025-12-30 15:43:33,837][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 12: [320/471 (68%)]	Loss: 0.091304
+[2025-12-30 15:43:33,837][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 12: Acc: 99.69%	macro metrics: [p: 0.9988, r:0.9870, f1:0.9924]
+[2025-12-30 15:44:00,189][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 12: [471/471 (100%)]	Loss: 0.094058
+[2025-12-30 15:44:00,189][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 12: Acc: 99.79%	macro metrics: [p: 0.9991, r:0.9917, f1:0.9952]
+[2025-12-30 15:44:00,521][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 12: [6/6](100%)	 Loss: 2.015162
+[2025-12-30 15:44:00,521][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 12: Acc: 50.00%	macro metrics: [p: 0.2000, r:0.1500, f1:0.1714]
+[2025-12-30 15:44:57,469][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 13: [320/471 (68%)]	Loss: 0.065094
+[2025-12-30 15:44:57,469][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 13: Acc: 100.00%	macro metrics: [p: 1.0000, r:1.0000, f1:1.0000]
+[2025-12-30 15:45:23,832][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 13: [471/471 (100%)]	Loss: 0.065815
+[2025-12-30 15:45:23,832][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 13: Acc: 100.00%	macro metrics: [p: 1.0000, r:1.0000, f1:1.0000]
+[2025-12-30 15:45:24,135][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 13: [6/6](100%)	 Loss: 2.197856
+[2025-12-30 15:45:24,135][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 13: Acc: 50.00%	macro metrics: [p: 0.2000, r:0.1500, f1:0.1714]
+[2025-12-30 15:46:20,700][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 14: [320/471 (68%)]	Loss: 0.036082
+[2025-12-30 15:46:20,700][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 14: Acc: 100.00%	macro metrics: [p: 1.0000, r:1.0000, f1:1.0000]
+[2025-12-30 15:46:47,069][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 14: [471/471 (100%)]	Loss: 0.068030
+[2025-12-30 15:46:47,069][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 14: Acc: 100.00%	macro metrics: [p: 1.0000, r:1.0000, f1:1.0000]
+[2025-12-30 15:46:47,438][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 14: [6/6](100%)	 Loss: 2.020010
+[2025-12-30 15:46:47,438][deepke.relation_extraction.standard.tools.trainer][INFO] - Valid Epoch 14: Acc: 50.00%	macro metrics: [p: 0.2000, r:0.1500, f1:0.1714]
+[2025-12-30 15:47:43,754][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 15: [320/471 (68%)]	Loss: 0.050900
+[2025-12-30 15:47:43,754][deepke.relation_extraction.standard.tools.trainer][INFO] - Train Epoch 15: Acc: 100.00%	macro metrics: [p: 1.0000, r:1.0000, f1:1.0000]

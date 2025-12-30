@@ -1,0 +1,2 @@
+# the path of the model / checkpoint to be used
+fp: 'C:\Users\19029\DeepKE\example\re\standard\re_bert.pth'

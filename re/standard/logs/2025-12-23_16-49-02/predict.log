@@ -1,0 +1,53 @@
+[2025-12-23 16:49:04,948][deepke.relation_extraction.standard.tools.preprocess][INFO] - use bert tokenizer...
+[2025-12-23 16:49:05,491][__main__][INFO] - device: cpu
+[2025-12-23 16:49:06,477][__main__][INFO] - model name: lm
+[2025-12-23 16:49:06,479][__main__][INFO] - 
+ LM(
+  (bert): BertModel(
+    (embeddings): BertEmbeddings(
+      (word_embeddings): Embedding(21128, 768, padding_idx=0)
+      (position_embeddings): Embedding(512, 768)
+      (token_type_embeddings): Embedding(2, 768)
+      (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (encoder): BertEncoder(
+      (layer): ModuleList(
+        (0): BertLayer(
+          (attention): BertAttention(
+            (self): BertSelfAttention(
+              (query): Linear(in_features=768, out_features=768, bias=True)
+              (key): Linear(in_features=768, out_features=768, bias=True)
+              (value): Linear(in_features=768, out_features=768, bias=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (output): BertSelfOutput(
+              (dense): Linear(in_features=768, out_features=768, bias=True)
+              (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (intermediate): BertIntermediate(
+            (dense): Linear(in_features=768, out_features=3072, bias=True)
+            (intermediate_act_fn): GELUActivation()
+          )
+          (output): BertOutput(
+            (dense): Linear(in_features=3072, out_features=768, bias=True)
+            (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+    )
+    (pooler): BertPooler(
+      (dense): Linear(in_features=768, out_features=768, bias=True)
+      (activation): Tanh()
+    )
+  )
+  (bilstm): RNN(
+    (rnn): LSTM(768, 50, batch_first=True, dropout=0.3, bidirectional=True)
+  )
+  (fc): Linear(in_features=100, out_features=51, bias=True)
+  (dropout): Dropout(p=0.3, inplace=False)
+)
+[2025-12-23 16:49:06,852][__main__][INFO] - "男人的爱" 和 "人生长路" 在句中关系为："所属专辑"，置信度为0.99。
