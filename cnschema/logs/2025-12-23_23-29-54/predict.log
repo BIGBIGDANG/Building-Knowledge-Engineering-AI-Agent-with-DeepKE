@@ -1,0 +1,42 @@
+[2025-12-23 23:29:54,467][__main__][INFO] - {'label2word_size': 28}
+[2025-12-23 23:29:54,468][pytorch_transformers.modeling_utils][INFO] - loading configuration file C:\Users\19029\DeepKE\example\ner\standard\checkpoints\config.json
+[2025-12-23 23:29:54,469][pytorch_transformers.modeling_utils][INFO] - Model config {
+  "architectures": [
+    "BertForMaskedLM"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "directionality": "bidi",
+  "finetuning_task": "ner",
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "num_labels": 60,
+  "output_attentions": false,
+  "output_hidden_states": false,
+  "output_past": true,
+  "pad_token_id": 0,
+  "pooler_fc_size": 768,
+  "pooler_num_attention_heads": 12,
+  "pooler_num_fc_layers": 3,
+  "pooler_size_per_head": 128,
+  "pooler_type": "first_token_transform",
+  "pruned_heads": {},
+  "torchscript": false,
+  "type_vocab_size": 2,
+  "vocab_size": 21128
+}
+
+[2025-12-23 23:29:54,470][pytorch_transformers.modeling_utils][INFO] - loading weights file C:\Users\19029\DeepKE\example\ner\standard\checkpoints\pytorch_model.bin
+[2025-12-23 23:29:55,979][pytorch_transformers.tokenization_utils][INFO] - Model name 'C:\Users\19029\DeepKE\example\ner\standard\checkpoints' not found in model shortcut name list (bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc). Assuming 'C:\Users\19029\DeepKE\example\ner\standard\checkpoints' is a path or url to a directory containing tokenizer files.
+[2025-12-23 23:29:55,981][pytorch_transformers.tokenization_utils][INFO] - loading file C:\Users\19029\DeepKE\example\ner\standard\checkpoints\vocab.txt
+[2025-12-23 23:29:55,981][pytorch_transformers.tokenization_utils][INFO] - loading file C:\Users\19029\DeepKE\example\ner\standard\checkpoints\added_tokens.json
+[2025-12-23 23:29:55,981][pytorch_transformers.tokenization_utils][INFO] - loading file C:\Users\19029\DeepKE\example\ner\standard\checkpoints\special_tokens_map.json
+[2025-12-23 23:29:55,981][pytorch_transformers.tokenization_utils][INFO] - loading file C:\Users\19029\DeepKE\example\ner\standard\checkpoints\tokenizer_config.json
+[2025-12-23 23:29:56,356][__main__][INFO] - {'chunks': 62, 'max_chunk_chars': 900, 'overlap': 80}
