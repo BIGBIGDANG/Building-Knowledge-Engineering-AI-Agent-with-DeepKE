@@ -2,10 +2,9 @@ import json
 import requests
 from volcengine.base.Request import Request
 
-account_id = "2117010232"  # 这里其实没用到，可删
-g_knowledge_base_domain = "api-knowledgebase.mlp.cn-beijing.volces.com"
-apikey = "89453749-8cfa-44d5-a1e1-2f0b9fa9edfc"  # 建议改成环境变量
-SERVICE_ID = "kb-service-2b51efbb9145c82a"
+g_knowledge_base_domain = ""
+apikey = ""  # 建议改成环境变量
+SERVICE_ID = ""
 
 
 def prepare_request(method, path, params=None, data=None, doseq=0):
@@ -18,7 +17,7 @@ def prepare_request(method, path, params=None, data=None, doseq=0):
                     params[key] = ",".join(params[key])
 
     r = Request()
-    r.set_shema("https")  # 改成 https
+    r.set_shema("https")  
     r.set_method(method)
     r.set_connection_timeout(30)
     r.set_socket_timeout(60)
@@ -67,10 +66,6 @@ def call_knowledge_service_chat(messages, stream=False):
 
 
 def extract_answer(resp_json):
-    """
-    不同服务返回字段可能不一样：尽量兼容。
-    你可以先 print(resp_json) 看结构，再把这里改成最准的字段。
-    """
     data = resp_json.get("data", {})
     # 常见：问答型可能有 generated_answer
     if isinstance(data, dict) and data.get("generated_answer"):
@@ -80,7 +75,7 @@ def extract_answer(resp_json):
 
 
 def main():
-    # 多轮历史（你也可以加 system，但有些知识服务未必支持）
+    
     history = []
 
     print("KnowledgeBase CLI Chat. 输入 exit/quit 退出。\n")
@@ -111,3 +106,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
